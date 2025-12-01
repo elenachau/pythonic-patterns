@@ -5,7 +5,6 @@ from functools import partial # returns function, supplies some arguments
 DiscountFunction = Callable[[int], int]
 
 
-# use lambda functions
 def percentage_discount(price: int, percentage: float) -> int:
     return int(price * percentage)
 
