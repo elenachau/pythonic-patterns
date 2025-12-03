@@ -2,7 +2,7 @@ from typing import Protocol
 
 
 class Exchange(Protocol):
-    def get_prices(self, symbol: str) -> list[int]:
+    def get_prices(self, symbol: str):
         """Get the prices of the given symbol."""
 
     def buy(self, symbol: str, amount: int) -> None:
