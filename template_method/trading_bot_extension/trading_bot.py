@@ -11,14 +11,6 @@ class TradingEngine(Protocol):
         """Sell some crypto currency."""
         ...
 
-    def should_buy(self, prices: list[int]) -> bool:
-        """Should we buy?"""
-        ...
-
-    def should_sell(self, prices: list[int]) -> bool:
-        """Should we sell?"""
-        ...
-
     def get_price_data(self) -> list[int]:
         """Get the price data."""
         ...
