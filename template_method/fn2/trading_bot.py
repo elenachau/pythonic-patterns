@@ -10,17 +10,21 @@ class TradingEngine(Protocol):
 
     def get_price_data(self) -> list[int]:
         """Get the price data."""
+        ...
 
     def get_amount(self) -> int:
         """Get the amount to trade."""
+        ...
 
 
 class TradingStrategy(Protocol):
     def should_buy(self, prices: list[int]) -> bool:
         """Should the bot buy?"""
+        ...
 
     def should_sell(self, prices: list[int]) -> bool:
         """Get the price data."""
+        ...
 
 
 # segregate protocols 
