@@ -46,7 +46,7 @@ def create_nl_tax_factory(tax_rate: float = 0.05, floor: int = 10_000_00) -> Tax
 
 def compute_tax(factory: TaxFactory, income: int, capital: int) -> int:
 
-    # create the tax calculators, remove the booleans
+    # factory is nothing more than a tuple of functions
     income_tax_calculator, capital_tax_calculator = factory
 
     # calculate the tax
