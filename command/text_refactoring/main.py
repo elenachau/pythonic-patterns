@@ -1,4 +1,5 @@
-from commands import AppendText, Batch, ChangeTitle, Clear
+from functools import partial
+from commands import append_text, batch, change_title, clear_text
 from controller import TextController
 from processor import Processor
 
@@ -15,25 +16,22 @@ def main() -> None:
     doc1 = processor.create_document("ArjanCodes")
     doc2 = processor.create_document("Meeting Notes")
 
-    # create command objects and execute with the controller
-    controller.execute(AppendText(doc1, "Hello World!"))
-    controller.execute(AppendText(doc2, "The meeting started at 9:00."))
+    undo_append = append_text(doc1, "Hello World!")
+    undo_append2 = append_text(doc2, "The meeting started at 9:00.")
     controller.undo()
 
     # update the title of the first document
-    controller.execute(ChangeTitle(doc1, "Important Meeting"))
+    undo_change_title = change_title(doc1, "Important Meeting")
 
-    controller.execute(
-        Batch(
-            commands=[
-                AppendText(doc1, "Hi there!"),
-                ChangeTitle(doc2, "Useless Meeting."),
-                Clear(doc2),
-            ]
-        )
-    )
-    controller.undo()
+    undo_change_title()
 
+    # execute a batch of commands
+    undo_batch = batch([
+        partial(append_text, doc=doc1, text="Hi there!"),
+        partial(clear_text, doc=doc2)
+    ])
+    undo_batch()
+    
     print(processor)
 
 

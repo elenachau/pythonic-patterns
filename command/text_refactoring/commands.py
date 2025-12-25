@@ -1,52 +1,47 @@
-from dataclasses import dataclass, field
-from controller import Command
+from typing import Callable
 from document import Document
 
+UndoFunction = Callable[[], None]
+CommandFunction = Callable[[], UndoFunction]  # use partial functions
 
-@dataclass
-class AppendText:
-    doc: Document
-    text: str
 
-    def execute(self) -> None:
-        self.doc.append(self.text)
+# return undo function
+def append_text(doc: Document, text: str) -> UndoFunction:
+    # create function closure
+    def undo() -> None:
+        doc.text = doc.text[: -len(text)]
 
-    def undo(self) -> None:
-        self.doc.text = self.doc.text[:-len(self.text)]
+    doc.append(text)
+    return undo
 
-@dataclass
-class Clear:
-    doc: Document
-    _old_text: str = ""
 
-    def execute(self) -> None:
-        self._old_text = self.doc.text
-        self.doc.clear()
+def clear_text(doc: Document) -> UndoFunction:
+    text = doc.text
 
-    def undo(self) -> None:
-        self.doc.append(self._old_text)
+    def undo() -> None:
+        doc.append(text)
 
-@dataclass
-class ChangeTitle:
-    doc: Document
-    title: str
-    _old_title: str = ""
+    doc.clear()
+    return undo
 
-    def execute(self) -> None:
-        self._old_title = self.doc.title
-        self.doc.set_title(self.title)
 
-    def undo(self) -> None:
-        self.doc.set_title(self._old_title)
+def change_title(doc: Document, title: str) -> UndoFunction:
+    old_title = doc.title
 
-@dataclass
-class Batch:
-    commands: list[Command] = field(default_factory=list)
+    def undo() -> None:
+        doc.set_title(old_title)
 
-    def execute(self) -> None:
-        for command in self.commands:
-            command.execute()
-    
-    def undo(self) -> None:
-        for command in reversed(self.commands):
-            command.undo()
+    doc.set_title(title)
+    return undo
+
+
+def batch(commands: list[CommandFunction]) -> UndoFunction:
+    undo_fns = [
+        command() for command in commands
+    ]  # runs each command in list of commands
+
+    def undo() -> None:
+        for undo_fn in reversed(undo_fns):
+            undo_fn()
+
+    return undo
