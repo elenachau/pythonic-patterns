@@ -1,28 +1,17 @@
-from typing import Any, Protocol
+from typing import Any, Callable
+
+task_functions: dict[str, Callable[..., None]] = {} # takes in any number of arguments
 
 
-class Task(Protocol):
-    def run(self) -> None:
-        """Runs the task."""
+def register(task_type: str, task_fn: Callable[..., None]) -> None:
+    task_functions[task_type] = task_fn
 
 
-class TaskFactory(Protocol):
-    def create(self, args: dict[str, Any]) -> Task:
-        """Creates a new task."""
+def unregister(task_type: str) -> None:
+    task_functions.pop(task_type, None)
 
 
-class TaskRegistry:
-    def __init__(self) -> None:
-        self.registry: dict[str, TaskFactory] = {}
-
-    def register(self, task_type: str, factory: TaskFactory) -> None:
-        self.registry[task_type] = factory  # stores factory in registry
-
-    def unregister(self, task_type: str) -> None:
-        self.registry.pop(task_type, None)
-
-    def create(self, args: dict[str, Any]) -> Task:
-        args_copy = args.copy()
-        task_type = args_copy.pop("type")
-        factory = self.registry[task_type]
-        return factory.create(args_copy)
+def run(args: dict[str, Any]) -> None:  # directly run task instead of just create
+    args_copy = args.copy()
+    task_type = args_copy.pop("type")
+    task_functions[task_type](**args_copy)
