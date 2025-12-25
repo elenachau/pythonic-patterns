@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from controller import Command
 from document import Document
 
 
@@ -37,3 +38,15 @@ class ChangeTitle:
 
     def undo(self) -> None:
         self.doc.set_title(self._old_title)
+
+@dataclass
+class Batch:
+    commands: list[Command] = field(default_factory=list)
+
+    def execute(self) -> None:
+        for command in self.commands:
+            command.execute()
+    
+    def undo(self) -> None:
+        for command in reversed(self.commands):
+            command.undo()

@@ -1,4 +1,4 @@
-from commands import AppendText, ChangeTitle
+from commands import AppendText, Batch, ChangeTitle, Clear
 from controller import TextController
 from processor import Processor
 
@@ -22,7 +22,17 @@ def main() -> None:
 
     # update the title of the first document
     controller.execute(ChangeTitle(doc1, "Important Meeting"))
-    controller.undo_all()
+
+    controller.execute(
+        Batch(
+            commands=[
+                AppendText(doc1, "Hi there!"),
+                ChangeTitle(doc2, "Useless Meeting."),
+                Clear(doc2),
+            ]
+        )
+    )
+    controller.undo()
 
     print(processor)
 
