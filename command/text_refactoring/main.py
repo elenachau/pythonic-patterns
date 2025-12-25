@@ -17,10 +17,12 @@ def main() -> None:
 
     # create command objects and execute with the controller
     controller.execute(AppendText(doc1, "Hello World!"))
-    controller.execute(AppendText(doc2, "Hello World!"))
+    controller.execute(AppendText(doc2, "The meeting started at 9:00."))
+    controller.undo()
 
     # update the title of the first document
-    controller.execute(ChangeTitle(doc1,"Important Meeting"))
+    controller.execute(ChangeTitle(doc1, "Important Meeting"))
+    controller.undo_all()
 
     print(processor)
 
