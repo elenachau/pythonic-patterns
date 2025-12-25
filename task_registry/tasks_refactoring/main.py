@@ -1,5 +1,6 @@
 import json
 from registry import register, run
+from loader import load_plugins
 from tasks import (
     recalibrate,
     reinforce,
@@ -16,6 +17,8 @@ def main() -> None:
 
     with open("./tasks.json", encoding="utf-8") as file:
         data = json.load(file)
+
+        load_plugins(data["plugins"])
 
         for task in data["tasks"]:
             run(task)

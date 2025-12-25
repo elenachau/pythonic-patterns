@@ -1,4 +1,5 @@
 {
+    "plugins": ["inject"],
     "tasks": [
         {
             "type": "pulse",
@@ -12,6 +13,11 @@
             "type": "reinforce",
             "plating_type": "biogenic",
             "target": "the deflector array"
+        },
+        {
+            "type": "inject",
+            "material": "tachyons",
+            "target": "molecular transporter resonator"
         }
     ]   
 }
