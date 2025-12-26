@@ -1,0 +1,10 @@
+[project]
+name = "before"
+version = "0.1.0"
+description = ""
+requires-python = "~=3.11"
+readme = "README.md"
+[[project.authors]]
+name = "Andreas Bergman"
+email = "support@arjancodes.com"
+

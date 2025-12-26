@@ -1,0 +1,22 @@
+[
+  {
+    "type": "circle",
+    "x": 70,
+    "y": 125,
+    "radius": 25
+  },
+  {
+    "type": "rectangle",
+    "x": 150,
+    "y": 100,
+    "height": 50,
+    "width": 100
+  },
+  {
+    "type": "star",
+    "x": 50,
+    "y": 50,
+    "width": 30,
+    "height": 30
+  }
+]
